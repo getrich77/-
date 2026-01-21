@@ -182,6 +182,11 @@
             font-size: 0.85rem;
         }
 
+        .btn-xs {
+            padding: 8px 12px;
+            font-size: 0.8rem;
+        }
+
         /* 플랫폼 감지 */
         .platform-detect {
             display: inline-flex;
@@ -200,7 +205,7 @@
             padding: 16px;
             background: #1e293b;
             border-radius: 12px;
-            max-height: 200px;
+            max-height: 150px;
             overflow-y: auto;
         }
 
@@ -220,17 +225,9 @@
             line-height: 1.6;
         }
 
-        .debug-log .error {
-            color: #ef4444;
-        }
-
-        .debug-log .warning {
-            color: #f59e0b;
-        }
-
-        .debug-log .info {
-            color: #3b82f6;
-        }
+        .debug-log .error { color: #ef4444; }
+        .debug-log .warning { color: #f59e0b; }
+        .debug-log .info { color: #3b82f6; }
 
         /* 저장된 블로그 관리 */
         .blog-manager {
@@ -244,7 +241,7 @@
             flex-direction: column;
             gap: 10px;
             margin-top: 16px;
-            max-height: 300px;
+            max-height: 250px;
             overflow-y: auto;
         }
 
@@ -260,7 +257,6 @@
 
         .blog-item:hover {
             border-color: #6366f1;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
         }
 
         .blog-item-platform {
@@ -275,20 +271,9 @@
         .blog-item-platform.tistory { background: #eb531120; color: #eb5311; }
         .blog-item-platform.blogger { background: #ff570020; color: #ff5700; }
 
-        .blog-item-info {
-            flex: 1;
-        }
-
-        .blog-item-name {
-            font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 2px;
-        }
-
-        .blog-item-url {
-            font-size: 0.85rem;
-            color: #64748b;
-        }
+        .blog-item-info { flex: 1; }
+        .blog-item-name { font-weight: 600; color: #1e293b; margin-bottom: 2px; }
+        .blog-item-url { font-size: 0.85rem; color: #64748b; }
 
         .blog-item-actions {
             display: flex;
@@ -339,9 +324,7 @@
         }
 
         /* 진행 상태 */
-        .progress-section {
-            display: none;
-        }
+        .progress-section { display: none; }
 
         .progress-header {
             display: flex;
@@ -372,16 +355,12 @@
             border-radius: 20px;
             transition: width 0.3s;
             width: 0%;
-            position: relative;
         }
 
         .progress-bar.collecting::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
             animation: shimmer 1.5s infinite;
         }
@@ -421,9 +400,7 @@
             transition: all 0.3s;
         }
 
-        .filter-tab:hover {
-            color: #475569;
-        }
+        .filter-tab:hover { color: #475569; }
 
         .filter-tab.active {
             background: white;
@@ -442,6 +419,85 @@
         .filter-tab.active .filter-count {
             background: #6366f120;
             color: #6366f1;
+        }
+
+        /* 복사 옵션 영역 */
+        .copy-section {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border: 2px solid #bbf7d0;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .copy-section-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #166534;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .copy-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .copy-btn {
+            padding: 12px 20px;
+            border: 2px solid #22c55e;
+            background: white;
+            color: #16a34a;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .copy-btn:hover {
+            background: #22c55e;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.3);
+        }
+
+        .copy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .copy-btn.active {
+            background: #22c55e;
+            color: white;
+        }
+
+        .copy-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #166534;
+        }
+
+        .copy-info-text strong {
+            color: #15803d;
+        }
+
+        .copy-range {
+            font-size: 0.85rem;
+            color: #64748b;
         }
 
         /* 액션 바 */
@@ -480,7 +536,7 @@
             background: #f8fafc;
             border-radius: 14px;
             padding: 16px;
-            max-height: 500px;
+            max-height: 450px;
             overflow-y: auto;
             border: 2px solid #e2e8f0;
         }
@@ -488,7 +544,7 @@
         .link-item {
             display: flex;
             align-items: center;
-            padding: 14px 16px;
+            padding: 12px 14px;
             background: white;
             border-radius: 10px;
             margin-bottom: 8px;
@@ -496,18 +552,14 @@
             transition: all 0.2s;
         }
 
-        .link-item:hover {
-            border-color: #6366f1;
-        }
+        .link-item:hover { border-color: #6366f1; }
 
         .link-item.submitted {
             background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
             border-color: #93c5fd;
         }
 
-        .link-item:last-child {
-            margin-bottom: 0;
-        }
+        .link-item:last-child { margin-bottom: 0; }
 
         .link-number {
             background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
@@ -527,13 +579,10 @@
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         }
 
-        .link-content {
-            flex: 1;
-            min-width: 0;
-        }
+        .link-content { flex: 1; min-width: 0; }
 
         .link-url {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #334155;
             word-break: break-all;
         }
@@ -554,9 +603,7 @@
             margin-top: 4px;
         }
 
-        .link-status {
-            margin-left: 14px;
-        }
+        .link-status { margin-left: 14px; }
 
         .status-badge {
             padding: 6px 12px;
@@ -565,15 +612,8 @@
             font-weight: 700;
         }
 
-        .status-badge.new {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .status-badge.submitted {
-            background: #dbeafe;
-            color: #1e40af;
-        }
+        .status-badge.new { background: #dcfce7; color: #166534; }
+        .status-badge.submitted { background: #dbeafe; color: #1e40af; }
 
         /* 페이지네이션 */
         .pagination {
@@ -641,10 +681,7 @@
         /* 모달 */
         .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            top: 0; left: 0; right: 0; bottom: 0;
             background: rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
@@ -670,9 +707,7 @@
             transition: all 0.3s;
         }
 
-        .modal-overlay.show .modal {
-            transform: scale(1);
-        }
+        .modal-overlay.show .modal { transform: scale(1); }
 
         .modal-title {
             font-size: 1.3rem;
@@ -681,9 +716,7 @@
             margin-bottom: 20px;
         }
 
-        .modal-input {
-            margin-bottom: 16px;
-        }
+        .modal-input { margin-bottom: 16px; }
 
         .modal-input label {
             display: block;
@@ -715,77 +748,22 @@
 
         /* 반응형 */
         @media (max-width: 768px) {
-            body {
-                padding: 20px 15px;
-            }
-
-            h1 {
-                font-size: 1.7rem;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .platform-badges {
-                flex-wrap: wrap;
-            }
-
-            .input-group {
-                flex-direction: column;
-            }
-
-            .stats-container {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-            }
-
-            .stat-card {
-                padding: 14px;
-            }
-
-            .stat-number {
-                font-size: 1.5rem;
-            }
-
-            .filter-tabs {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .action-bar {
-                flex-direction: column;
-            }
-
-            .action-buttons {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .blog-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 12px;
-            }
-
-            .blog-item-actions {
-                width: 100%;
-            }
-
-            .blog-item-actions button {
-                flex: 1;
-            }
-
-            .link-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-
-            .link-status {
-                margin-left: 0;
-                align-self: flex-end;
-            }
+            body { padding: 20px 15px; }
+            h1 { font-size: 1.7rem; }
+            .card { padding: 20px; }
+            .input-group { flex-direction: column; }
+            .stats-container { gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-number { font-size: 1.5rem; }
+            .filter-tabs { width: 100%; justify-content: center; }
+            .copy-options { justify-content: center; }
+            .action-bar { flex-direction: column; }
+            .action-buttons { width: 100%; justify-content: center; }
+            .blog-item { flex-direction: column; align-items: flex-start; gap: 12px; }
+            .blog-item-actions { width: 100%; }
+            .blog-item-actions button { flex: 1; }
+            .link-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .link-status { margin-left: 0; align-self: flex-end; }
         }
 
         /* 스크롤바 */
@@ -838,14 +816,14 @@
             <div class="debug-section" id="debugSection" style="display: none;">
                 <div class="debug-title">
                     <span>🔍 수집 로그</span>
-                    <button class="btn-secondary btn-small" onclick="clearDebugLog()" style="padding: 4px 10px; font-size: 0.75rem;">지우기</button>
+                    <button class="btn-secondary btn-xs" onclick="clearDebugLog()">지우기</button>
                 </div>
                 <div class="debug-log" id="debugLog"></div>
             </div>
 
             <!-- 저장된 블로그 관리 -->
             <div class="blog-manager" id="blogManager" style="display: none;">
-                <div class="section-title">💾 저장된 블로그 관리</div>
+                <div class="section-title">💾 저장된 블로그</div>
                 <div class="blog-list" id="blogList"></div>
             </div>
         </div>
@@ -895,19 +873,48 @@
                 </button>
             </div>
 
-            <div class="action-bar">
-                <div class="action-info">
-                    <strong id="newLinksInfo">0</strong>개의 새 링크를 복사할 수 있습니다
+            <!-- 단위별 복사 섹션 -->
+            <div class="copy-section">
+                <div class="copy-section-title">📋 새 링크 단위별 복사</div>
+                <div class="copy-options" id="copyOptions">
+                    <button class="copy-btn" onclick="copyByCount(50)" id="copyBtn50">
+                        <span>50개</span>
+                    </button>
+                    <button class="copy-btn" onclick="copyByCount(100)" id="copyBtn100">
+                        <span>100개</span>
+                    </button>
+                    <button class="copy-btn" onclick="copyByCount(150)" id="copyBtn150">
+                        <span>150개</span>
+                    </button>
+                    <button class="copy-btn" onclick="copyByCount(200)" id="copyBtn200">
+                        <span>200개</span>
+                    </button>
+                    <button class="copy-btn" onclick="copyAllNew()" id="copyBtnAll" style="border-color: #6366f1; color: #6366f1;">
+                        <span>✨ 전체</span>
+                    </button>
                 </div>
-                <div class="action-buttons">
-                    <button class="btn-success btn-small" onclick="copyNewLinks()">✨ 새 링크 복사</button>
-                    <button class="btn-warning btn-small" onclick="copyCurrentPage()">📋 현재 페이지</button>
-                    <button class="btn-primary btn-small" onclick="copyAllLinks()">📑 전체 복사</button>
-                    <button class="btn-secondary btn-small" onclick="resetSubmitted()">🔄 초기화</button>
-                    <button class="btn-danger btn-small" onclick="clearResults()">🗑️ 삭제</button>
+                <div class="copy-info">
+                    <div class="copy-info-text">
+                        복사 가능한 새 링크: <strong id="availableNewCount">0</strong>개
+                    </div>
+                    <div class="copy-range" id="copyRange">-</div>
                 </div>
             </div>
 
+            <!-- 기타 액션 -->
+            <div class="action-bar">
+                <div class="action-info">
+                    현재 보기: <strong id="currentViewInfo">전체</strong>
+                </div>
+                <div class="action-buttons">
+                    <button class="btn-warning btn-small" onclick="copyCurrentPage()">📋 현재 페이지 복사</button>
+                    <button class="btn-primary btn-small" onclick="copyAllLinks()">📑 전체 복사 (제출 포함)</button>
+                    <button class="btn-secondary btn-small" onclick="resetSubmitted()">🔄 제출 초기화</button>
+                    <button class="btn-danger btn-small" onclick="clearResults()">🗑️ 결과 삭제</button>
+                </div>
+            </div>
+
+            <!-- 링크 목록 -->
             <div class="links-container" id="linksContainer">
                 <div class="empty-state">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -931,7 +938,7 @@
             <div class="modal-title">✏️ 블로그 정보 수정</div>
             <div class="modal-input">
                 <label>블로그 이름 (선택)</label>
-                <input type="text" id="editBlogName" placeholder="블로그 이름을 입력하세요">
+                <input type="text" id="editBlogName" placeholder="블로그 이름">
             </div>
             <div class="modal-input">
                 <label>블로그 URL</label>
@@ -950,8 +957,8 @@
     <script>
         // ==================== 상태 관리 ====================
         let collectedLinks = [];
-        let savedBlogs = JSON.parse(localStorage.getItem('savedBlogs_v4')) || [];
-        let submittedLinks = new Set(JSON.parse(localStorage.getItem('submittedLinks_v4')) || []);
+        let savedBlogs = JSON.parse(localStorage.getItem('savedBlogs_v5')) || [];
+        let submittedLinks = new Set(JSON.parse(localStorage.getItem('submittedLinks_v5')) || []);
         let currentPage = 1;
         let currentFilter = 'all';
         const linksPerPage = 100;
@@ -959,22 +966,12 @@
         let shouldStop = false;
         let editingBlogIndex = -1;
 
-        // ==================== CORS 프록시 목록 ====================
+        // ==================== CORS 프록시 ====================
         const PROXIES = [
-            {
-                name: 'allorigins',
-                url: (target) => `https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`
-            },
-            {
-                name: 'corsproxy.io',
-                url: (target) => `https://corsproxy.io/?${encodeURIComponent(target)}`
-            },
-            {
-                name: 'cors-anywhere-alt',
-                url: (target) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`
-            }
+            { name: 'corsproxy.io', url: (t) => `https://corsproxy.io/?${encodeURIComponent(t)}` },
+            { name: 'allorigins', url: (t) => `https://api.allorigins.win/raw?url=${encodeURIComponent(t)}` },
+            { name: 'codetabs', url: (t) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(t)}` }
         ];
-
         let currentProxyIndex = 0;
 
         // ==================== 플랫폼 설정 ====================
@@ -982,48 +979,37 @@
             naver: {
                 name: '네이버 블로그',
                 color: '#03c75a',
-                patterns: [
-                    /blog\.naver\.com\/([^\/\?\#]+)/,
-                    /m\.blog\.naver\.com\/([^\/\?\#]+)/
-                ]
+                patterns: [/blog\.naver\.com\/([^\/\?\#]+)/, /m\.blog\.naver\.com\/([^\/\?\#]+)/]
             },
             tistory: {
                 name: '티스토리',
                 color: '#eb5311',
-                patterns: [
-                    /([a-zA-Z0-9-]+)\.tistory\.com/
-                ]
+                patterns: [/([a-zA-Z0-9-]+)\.tistory\.com/]
             },
             blogger: {
                 name: '블로그스팟',
                 color: '#ff5700',
-                patterns: [
-                    /([a-zA-Z0-9-]+)\.blogspot\.com/
-                ]
+                patterns: [/([a-zA-Z0-9-]+)\.blogspot\.com/]
             }
         };
 
         // ==================== 초기화 ====================
         document.addEventListener('DOMContentLoaded', () => {
             renderBlogList();
-            
-            const input = document.getElementById('blogUrl');
-            input.addEventListener('keypress', (e) => {
+            document.getElementById('blogUrl').addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') addBlog();
             });
-            input.addEventListener('input', detectPlatformFromInput);
+            document.getElementById('blogUrl').addEventListener('input', detectPlatformFromInput);
         });
 
         // ==================== 디버그 로그 ====================
         function debugLog(message, type = 'info') {
-            const debugSection = document.getElementById('debugSection');
-            const debugLogEl = document.getElementById('debugLog');
-            debugSection.style.display = 'block';
-            
+            const section = document.getElementById('debugSection');
+            const log = document.getElementById('debugLog');
+            section.style.display = 'block';
             const time = new Date().toLocaleTimeString();
-            const className = type === 'error' ? 'error' : type === 'warning' ? 'warning' : 'info';
-            debugLogEl.innerHTML += `<div class="${className}">[${time}] ${message}</div>`;
-            debugLogEl.scrollTop = debugLogEl.scrollHeight;
+            log.innerHTML += `<div class="${type}">[${time}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
         }
 
         function clearDebugLog() {
@@ -1031,53 +1017,31 @@
         }
 
         // ==================== 프록시 요청 ====================
-        async function fetchWithProxy(url, options = {}) {
-            let lastError;
-            
+        async function fetchWithProxy(url) {
             for (let i = 0; i < PROXIES.length; i++) {
-                const proxyIndex = (currentProxyIndex + i) % PROXIES.length;
-                const proxy = PROXIES[proxyIndex];
-                
+                const idx = (currentProxyIndex + i) % PROXIES.length;
+                const proxy = PROXIES[idx];
                 try {
-                    debugLog(`프록시 시도: ${proxy.name}`, 'info');
-                    const proxyUrl = proxy.url(url);
-                    
-                    const response = await fetch(proxyUrl, {
-                        ...options,
-                        signal: AbortSignal.timeout(15000) // 15초 타임아웃
-                    });
-                    
+                    debugLog(`프록시: ${proxy.name}`, 'info');
+                    const response = await fetch(proxy.url(url), { signal: AbortSignal.timeout(15000) });
                     if (response.ok) {
-                        currentProxyIndex = proxyIndex; // 성공한 프록시 기억
-                        debugLog(`${proxy.name} 성공!`, 'info');
+                        currentProxyIndex = idx;
                         return response;
                     }
-                    
-                    throw new Error(`HTTP ${response.status}`);
-                } catch (error) {
-                    debugLog(`${proxy.name} 실패: ${error.message}`, 'warning');
-                    lastError = error;
+                } catch (e) {
+                    debugLog(`${proxy.name} 실패`, 'warning');
                 }
             }
-            
-            throw lastError || new Error('모든 프록시 실패');
+            throw new Error('모든 프록시 실패');
         }
 
         // ==================== 플랫폼 감지 ====================
         function detectPlatform(url) {
             url = normalizeUrl(url);
-            
             for (const [key, platform] of Object.entries(PLATFORMS)) {
                 for (const pattern of platform.patterns) {
                     const match = url.match(pattern);
-                    if (match) {
-                        return { 
-                            type: key, 
-                            name: platform.name, 
-                            color: platform.color,
-                            id: match[1]
-                        };
-                    }
+                    if (match) return { type: key, name: platform.name, color: platform.color, id: match[1] };
                 }
             }
             return null;
@@ -1086,33 +1050,17 @@
         function detectPlatformFromInput() {
             const input = document.getElementById('blogUrl').value;
             const container = document.getElementById('platformDetect');
+            if (!input.trim()) { container.innerHTML = ''; return; }
             
-            if (!input.trim()) {
-                container.innerHTML = '';
-                return;
-            }
-
             const platform = detectPlatform(input);
-            if (platform) {
-                container.innerHTML = `
-                    <span class="platform-detect" style="background: ${platform.color}15; color: ${platform.color}; border: 2px solid ${platform.color}30;">
-                        ✓ ${platform.name} 감지됨 (${platform.id})
-                    </span>
-                `;
-            } else {
-                container.innerHTML = `
-                    <span class="platform-detect" style="background: #fee2e2; color: #dc2626;">
-                        ⚠️ 지원하지 않는 플랫폼 (네이버, 티스토리, 블로그스팟만 지원)
-                    </span>
-                `;
-            }
+            container.innerHTML = platform 
+                ? `<span class="platform-detect" style="background: ${platform.color}15; color: ${platform.color}; border: 2px solid ${platform.color}30;">✓ ${platform.name} (${platform.id})</span>`
+                : `<span class="platform-detect" style="background: #fee2e2; color: #dc2626;">⚠️ 지원하지 않는 플랫폼</span>`;
         }
 
         function normalizeUrl(url) {
             url = url.trim();
-            if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'https://' + url;
-            }
+            if (!url.startsWith('http')) url = 'https://' + url;
             return url.replace(/\/$/, '');
         }
 
@@ -1120,45 +1068,26 @@
         function addBlog() {
             const input = document.getElementById('blogUrl').value;
             const platform = detectPlatform(input);
-
-            if (!platform) {
-                showToast('❌ 지원하지 않는 플랫폼입니다');
-                return;
-            }
-
-            const blogData = {
-                url: normalizeUrl(input),
-                platform: platform.type,
-                name: platform.name,
-                id: platform.id,
-                customName: ''
-            };
-
-            if (savedBlogs.find(b => b.url === blogData.url)) {
-                showToast('⚠️ 이미 저장된 블로그입니다');
-                return;
-            }
-
+            if (!platform) { showToast('❌ 지원하지 않는 플랫폼'); return; }
+            
+            const blogData = { url: normalizeUrl(input), platform: platform.type, name: platform.name, id: platform.id, customName: '' };
+            if (savedBlogs.find(b => b.url === blogData.url)) { showToast('⚠️ 이미 저장됨'); return; }
+            
             savedBlogs.push(blogData);
-            localStorage.setItem('savedBlogs_v4', JSON.stringify(savedBlogs));
+            localStorage.setItem('savedBlogs_v5', JSON.stringify(savedBlogs));
             document.getElementById('blogUrl').value = '';
             document.getElementById('platformDetect').innerHTML = '';
             renderBlogList();
-            showToast('✅ 블로그가 추가되었습니다');
+            showToast('✅ 블로그 추가됨');
         }
 
         function renderBlogList() {
             const container = document.getElementById('blogList');
             const manager = document.getElementById('blogManager');
-
-            if (savedBlogs.length === 0) {
-                manager.style.display = 'none';
-                return;
-            }
-
-            manager.style.display = 'block';
+            if (savedBlogs.length === 0) { manager.style.display = 'none'; return; }
             
-            container.innerHTML = savedBlogs.map((blog, index) => `
+            manager.style.display = 'block';
+            container.innerHTML = savedBlogs.map((blog, i) => `
                 <div class="blog-item">
                     <span class="blog-item-platform ${blog.platform}">${blog.name}</span>
                     <div class="blog-item-info">
@@ -1166,34 +1095,32 @@
                         <div class="blog-item-url">${blog.url}</div>
                     </div>
                     <div class="blog-item-actions">
-                        <button class="btn-primary btn-small" onclick="selectBlog(${index})">선택</button>
-                        <button class="btn-secondary btn-small" onclick="openEditModal(${index})">수정</button>
-                        <button class="btn-danger btn-small" onclick="removeBlog(${index})">삭제</button>
+                        <button class="btn-primary btn-small" onclick="selectBlog(${i})">선택</button>
+                        <button class="btn-secondary btn-small" onclick="openEditModal(${i})">수정</button>
+                        <button class="btn-danger btn-small" onclick="removeBlog(${i})">삭제</button>
                     </div>
                 </div>
             `).join('');
         }
 
-        function selectBlog(index) {
-            document.getElementById('blogUrl').value = savedBlogs[index].url;
+        function selectBlog(i) {
+            document.getElementById('blogUrl').value = savedBlogs[i].url;
             detectPlatformFromInput();
-            showToast('📌 블로그가 선택되었습니다');
         }
 
-        function removeBlog(index) {
-            if (confirm('이 블로그를 삭제하시겠습니까?')) {
-                savedBlogs.splice(index, 1);
-                localStorage.setItem('savedBlogs_v4', JSON.stringify(savedBlogs));
+        function removeBlog(i) {
+            if (confirm('삭제하시겠습니까?')) {
+                savedBlogs.splice(i, 1);
+                localStorage.setItem('savedBlogs_v5', JSON.stringify(savedBlogs));
                 renderBlogList();
-                showToast('🗑️ 블로그가 삭제되었습니다');
+                showToast('🗑️ 삭제됨');
             }
         }
 
-        function openEditModal(index) {
-            editingBlogIndex = index;
-            const blog = savedBlogs[index];
-            document.getElementById('editBlogName').value = blog.customName || '';
-            document.getElementById('editBlogUrl').value = blog.url;
+        function openEditModal(i) {
+            editingBlogIndex = i;
+            document.getElementById('editBlogName').value = savedBlogs[i].customName || '';
+            document.getElementById('editBlogUrl').value = savedBlogs[i].url;
             document.getElementById('editModal').classList.add('show');
         }
 
@@ -1204,44 +1131,25 @@
 
         function saveEditBlog() {
             if (editingBlogIndex === -1) return;
-
             const newName = document.getElementById('editBlogName').value.trim();
             const newUrl = document.getElementById('editBlogUrl').value.trim();
             const platform = detectPlatform(newUrl);
-
-            if (!platform) {
-                showToast('❌ 지원하지 않는 플랫폼입니다');
-                return;
-            }
-
-            savedBlogs[editingBlogIndex] = {
-                url: normalizeUrl(newUrl),
-                platform: platform.type,
-                name: platform.name,
-                id: platform.id,
-                customName: newName
-            };
-
-            localStorage.setItem('savedBlogs_v4', JSON.stringify(savedBlogs));
+            if (!platform) { showToast('❌ 지원하지 않는 플랫폼'); return; }
+            
+            savedBlogs[editingBlogIndex] = { url: normalizeUrl(newUrl), platform: platform.type, name: platform.name, id: platform.id, customName: newName };
+            localStorage.setItem('savedBlogs_v5', JSON.stringify(savedBlogs));
             closeEditModal();
             renderBlogList();
-            showToast('✅ 블로그 정보가 수정되었습니다');
+            showToast('✅ 수정됨');
         }
 
         // ==================== 수집 제어 ====================
         async function startCollect() {
-            if (isCollecting) {
-                showToast('⏳ 이미 수집 중입니다');
-                return;
-            }
-
+            if (isCollecting) { showToast('⏳ 수집 중'); return; }
+            
             const input = document.getElementById('blogUrl').value;
             const platform = detectPlatform(input);
-
-            if (!platform) {
-                showToast('❌ 올바른 블로그 주소를 입력해주세요');
-                return;
-            }
+            if (!platform) { showToast('❌ 올바른 주소 입력'); return; }
 
             isCollecting = true;
             shouldStop = false;
@@ -1250,41 +1158,31 @@
             currentFilter = 'all';
             clearDebugLog();
 
-            // UI 업데이트
             document.getElementById('startBtn').style.display = 'none';
             document.getElementById('stopBtn').style.display = 'flex';
             document.getElementById('progressSection').style.display = 'block';
             document.getElementById('resultsSection').style.display = 'block';
             document.getElementById('progressBar').style.width = '0%';
             document.getElementById('progressPlatform').textContent = platform.name;
-            document.getElementById('progressCount').textContent = '0개 수집';
+            document.getElementById('progressCount').textContent = '0개';
             document.getElementById('progressStatus').textContent = '연결 중...';
 
             resetFilterTabs();
-            debugLog(`수집 시작: ${platform.name} (${platform.id})`, 'info');
+            debugLog(`수집 시작: ${platform.name} (${platform.id})`);
 
             try {
                 await collectByPlatform(platform, normalizeUrl(input));
-                
-                if (shouldStop) {
-                    showToast(`⏹ 수집 중지됨 (${collectedLinks.length}개 수집)`);
-                    debugLog(`수집 중지됨: ${collectedLinks.length}개`, 'warning');
-                } else {
-                    const newCount = collectedLinks.filter(l => !l.submitted).length;
-                    showToast(`✅ 수집 완료! 총 ${collectedLinks.length}개 (새 링크: ${newCount}개)`);
-                    debugLog(`수집 완료: 총 ${collectedLinks.length}개, 새 링크 ${newCount}개`, 'info');
-                }
+                const newCount = collectedLinks.filter(l => !l.submitted).length;
+                showToast(shouldStop ? `⏹ 중지됨 (${collectedLinks.length}개)` : `✅ 완료! ${collectedLinks.length}개 (새 링크: ${newCount}개)`);
             } catch (error) {
-                console.error(error);
-                showToast('❌ 수집 중 오류 발생');
-                debugLog(`오류 발생: ${error.message}`, 'error');
+                showToast('❌ 오류 발생');
+                debugLog(`오류: ${error.message}`, 'error');
             } finally {
                 isCollecting = false;
                 shouldStop = false;
                 document.getElementById('startBtn').style.display = 'flex';
                 document.getElementById('stopBtn').style.display = 'none';
                 document.getElementById('progressSection').style.display = 'none';
-                document.getElementById('progressBar').classList.remove('collecting');
             }
         }
 
@@ -1292,405 +1190,113 @@
             if (isCollecting) {
                 shouldStop = true;
                 document.getElementById('progressStatus').textContent = '정지 중...';
-                debugLog('수집 정지 요청됨', 'warning');
-                showToast('⏹ 수집을 정지합니다...');
+                showToast('⏹ 정지 중...');
             }
         }
 
         // ==================== 플랫폼별 수집 ====================
         async function collectByPlatform(platform, url) {
             switch (platform.type) {
-                case 'naver':
-                    await collectNaverBlog(platform.id);
-                    break;
-                case 'tistory':
-                    await collectTistory(platform.id, url);
-                    break;
-                case 'blogger':
-                    await collectBlogger(url);
-                    break;
+                case 'naver': await collectNaverBlog(platform.id); break;
+                case 'tistory': await collectTistory(platform.id, url); break;
+                case 'blogger': await collectBlogger(url); break;
             }
-
             renderLinks();
             updateStats();
+            updateCopyButtons();
         }
 
-        // ========== 네이버 블로그 ==========
+        // 네이버 블로그
         async function collectNaverBlog(blogId) {
-            debugLog(`네이버 블로그 수집 시작: ${blogId}`, 'info');
+            let page = 1, hasMore = true, errors = 0;
             
-            let page = 1;
-            let hasMore = true;
-            let consecutiveErrors = 0;
-            const maxPages = 500;
-
-            while (hasMore && !shouldStop && page <= maxPages) {
+            while (hasMore && !shouldStop && page <= 500) {
                 try {
-                    updateProgress(collectedLinks.length, `페이지 ${page} 수집 중...`);
-                    
-                    // 네이버 블로그 API 직접 호출 시도
+                    updateProgress(collectedLinks.length, `페이지 ${page}...`);
                     const apiUrl = `https://blog.naver.com/PostTitleListAsync.naver?blogId=${blogId}&currentPage=${page}&countPerPage=30`;
-                    
-                    debugLog(`API 요청: 페이지 ${page}`, 'info');
                     const response = await fetchWithProxy(apiUrl);
                     const text = await response.text();
                     
-                    let foundCount = 0;
-
-                    // JSON 파싱 시도
+                    let found = 0;
                     try {
-                        // 네이버 응답은 특수한 형식일 수 있음
                         const data = JSON.parse(text);
-                        
-                        if (data.postList && Array.isArray(data.postList) && data.postList.length > 0) {
+                        if (data.postList?.length > 0) {
                             data.postList.forEach(post => {
                                 const postUrl = `https://blog.naver.com/${blogId}/${post.logNo}`;
                                 if (!collectedLinks.find(l => l.url === postUrl)) {
-                                    collectedLinks.push({
-                                        url: postUrl,
-                                        platform: 'naver',
-                                        submitted: submittedLinks.has(postUrl)
-                                    });
-                                    foundCount++;
+                                    collectedLinks.push({ url: postUrl, platform: 'naver', submitted: submittedLinks.has(postUrl) });
+                                    found++;
                                 }
                             });
-                            debugLog(`페이지 ${page}: ${foundCount}개 발견 (JSON)`, 'info');
                             hasMore = data.postList.length >= 30;
-                        } else {
-                            debugLog(`페이지 ${page}: 더 이상 게시물 없음`, 'info');
-                            hasMore = false;
-                        }
-                    } catch (jsonError) {
-                        // JSON 파싱 실패 시 HTML에서 추출
-                        debugLog(`JSON 파싱 실패, HTML 파싱 시도`, 'warning');
-                        
-                        // logNo 패턴 추출
-                        const logNoPattern = /logNo['":\s]+(\d+)/g;
-                        const matches = [...text.matchAll(logNoPattern)];
-                        
-                        if (matches.length > 0) {
-                            const uniqueLogNos = [...new Set(matches.map(m => m[1]))];
-                            uniqueLogNos.forEach(logNo => {
-                                const postUrl = `https://blog.naver.com/${blogId}/${logNo}`;
-                                if (!collectedLinks.find(l => l.url === postUrl)) {
-                                    collectedLinks.push({
-                                        url: postUrl,
-                                        platform: 'naver',
-                                        submitted: submittedLinks.has(postUrl)
-                                    });
-                                    foundCount++;
-                                }
-                            });
-                            debugLog(`페이지 ${page}: ${foundCount}개 발견 (HTML)`, 'info');
-                            hasMore = uniqueLogNos.length >= 25;
-                        } else {
-                            // 다른 패턴 시도
-                            const hrefPattern = /\/([a-zA-Z0-9_-]+)\/(\d{10,})/g;
-                            const hrefMatches = [...text.matchAll(hrefPattern)];
-                            
-                            hrefMatches.forEach(match => {
-                                if (match[1] === blogId) {
-                                    const postUrl = `https://blog.naver.com/${blogId}/${match[2]}`;
-                                    if (!collectedLinks.find(l => l.url === postUrl)) {
-                                        collectedLinks.push({
-                                            url: postUrl,
-                                            platform: 'naver',
-                                            submitted: submittedLinks.has(postUrl)
-                                        });
-                                        foundCount++;
-                                    }
-                                }
-                            });
-                            
-                            if (foundCount > 0) {
-                                debugLog(`페이지 ${page}: ${foundCount}개 발견 (href 패턴)`, 'info');
+                        } else hasMore = false;
+                    } catch {
+                        const matches = [...text.matchAll(/logNo['":\s]+(\d+)/g)];
+                        [...new Set(matches.map(m => m[1]))].forEach(logNo => {
+                            const postUrl = `https://blog.naver.com/${blogId}/${logNo}`;
+                            if (!collectedLinks.find(l => l.url === postUrl)) {
+                                collectedLinks.push({ url: postUrl, platform: 'naver', submitted: submittedLinks.has(postUrl) });
+                                found++;
                             }
-                            
-                            hasMore = foundCount > 0;
-                        }
+                        });
+                        hasMore = found >= 25;
                     }
-
-                    if (foundCount === 0 && page > 1) {
-                        consecutiveErrors++;
-                        if (consecutiveErrors >= 2) {
-                            debugLog('연속 2회 수집 실패, 종료', 'warning');
-                            hasMore = false;
-                        }
-                    } else {
-                        consecutiveErrors = 0;
-                    }
-
+                    
+                    debugLog(`페이지 ${page}: ${found}개`);
+                    if (found === 0) { errors++; if (errors >= 2) hasMore = false; }
+                    else errors = 0;
                     page++;
                     await sleep(500);
-
-                } catch (error) {
-                    debugLog(`페이지 ${page} 오류: ${error.message}`, 'error');
-                    consecutiveErrors++;
-                    if (consecutiveErrors >= 3) {
-                        debugLog('연속 3회 오류, 수집 종료', 'error');
-                        hasMore = false;
-                    }
+                } catch (e) {
+                    debugLog(`오류: ${e.message}`, 'error');
+                    errors++;
+                    if (errors >= 3) hasMore = false;
                     await sleep(1500);
                 }
             }
-
-            // 결과가 없으면 블로그 메인 페이지에서 직접 수집 시도
-            if (collectedLinks.length === 0) {
-                debugLog('API 수집 실패, 블로그 메인 페이지 크롤링 시도', 'warning');
-                await crawlNaverBlogMain(blogId);
-            }
         }
 
-        async function crawlNaverBlogMain(blogId) {
-            try {
-                const mainUrl = `https://blog.naver.com/PostList.naver?blogId=${blogId}&from=postList&categoryNo=0`;
-                debugLog(`메인 페이지 크롤링: ${mainUrl}`, 'info');
-                
-                const response = await fetchWithProxy(mainUrl);
-                const html = await response.text();
-                
-                // 다양한 패턴으로 포스트 ID 추출
-                const patterns = [
-                    /logNo=(\d+)/g,
-                    /\/(\d{10,})(?:\?|"|'|$)/g,
-                    /postId['":\s]+['"]?(\d+)/g
-                ];
-
-                const foundIds = new Set();
-                
-                for (const pattern of patterns) {
-                    const matches = [...html.matchAll(pattern)];
-                    matches.forEach(match => {
-                        if (match[1] && match[1].length >= 10) {
-                            foundIds.add(match[1]);
-                        }
-                    });
-                }
-
-                foundIds.forEach(logNo => {
-                    const postUrl = `https://blog.naver.com/${blogId}/${logNo}`;
-                    if (!collectedLinks.find(l => l.url === postUrl)) {
-                        collectedLinks.push({
-                            url: postUrl,
-                            platform: 'naver',
-                            submitted: submittedLinks.has(postUrl)
-                        });
-                    }
-                });
-
-                debugLog(`메인 페이지에서 ${foundIds.size}개 발견`, 'info');
-            } catch (error) {
-                debugLog(`메인 페이지 크롤링 실패: ${error.message}`, 'error');
-            }
-        }
-
-        // ========== 티스토리 ==========
+        // 티스토리
         async function collectTistory(blogId, baseUrl) {
-            debugLog(`티스토리 수집 시작: ${blogId}`, 'info');
-            
-            // 1. RSS 피드 시도
             try {
-                debugLog('RSS 피드 수집 시도...', 'info');
-                updateProgress(0, 'RSS 피드 수집 중...');
+                debugLog('RSS 수집...');
+                updateProgress(0, 'RSS 수집 중...');
                 await collectFromRSS(`${baseUrl}/rss`, 'tistory');
-                debugLog(`RSS 수집 완료: ${collectedLinks.length}개`, 'info');
-            } catch (e) {
-                debugLog(`RSS 실패: ${e.message}`, 'warning');
-            }
+            } catch (e) { debugLog(`RSS 실패: ${e.message}`, 'warning'); }
 
-            if (shouldStop) return;
-
-            // 2. 사이트맵 시도
-            if (collectedLinks.length < 100) {
+            if (!shouldStop && collectedLinks.length < 100) {
                 try {
-                    debugLog('사이트맵 수집 시도...', 'info');
-                    updateProgress(collectedLinks.length, '사이트맵 수집 중...');
-                    await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'tistory', baseUrl);
-                    debugLog(`사이트맵 수집 후: ${collectedLinks.length}개`, 'info');
-                } catch (e) {
-                    debugLog(`사이트맵 실패: ${e.message}`, 'warning');
-                }
+                    debugLog('사이트맵 수집...');
+                    await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'tistory');
+                } catch (e) { debugLog(`사이트맵 실패`, 'warning'); }
             }
 
-            if (shouldStop) return;
-
-            // 3. 페이지 크롤링
-            if (collectedLinks.length < 50) {
-                debugLog('페이지 크롤링 시도...', 'info');
-                await crawlTistoryPages(baseUrl);
+            if (!shouldStop && collectedLinks.length < 50) {
+                debugLog('페이지 크롤링...');
+                await crawlPages(baseUrl, 'tistory');
             }
         }
 
-        async function crawlTistoryPages(baseUrl) {
-            let page = 1;
-            let consecutiveEmpty = 0;
-
-            while (!shouldStop && page <= 100 && consecutiveEmpty < 3) {
-                try {
-                    updateProgress(collectedLinks.length, `페이지 ${page} 크롤링 중...`);
-                    
-                    const pageUrl = `${baseUrl}/?page=${page}`;
-                    debugLog(`크롤링: ${pageUrl}`, 'info');
-                    
-                    const response = await fetchWithProxy(pageUrl);
-                    const html = await response.text();
-                    
-                    let foundCount = 0;
-                    
-                    // 티스토리 포스트 URL 패턴들
-                    const patterns = [
-                        new RegExp(`href=["'](${baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(\\d+))["']`, 'g'),
-                        new RegExp(`href=["']/(\\d+)["']`, 'g'),
-                        new RegExp(`href=["'](https?://[^"']*tistory\\.com/(\\d+))["']`, 'g'),
-                        /href=["']([^"']*\/entry\/[^"']+)["']/g
-                    ];
-
-                    for (const pattern of patterns) {
-                        let match;
-                        while ((match = pattern.exec(html)) !== null) {
-                            let postUrl = match[1];
-                            
-                            // 상대 경로 처리
-                            if (postUrl.startsWith('/')) {
-                                postUrl = baseUrl + postUrl;
-                            }
-                            
-                            // 숫자로만 된 경우
-                            if (/^\d+$/.test(postUrl)) {
-                                postUrl = `${baseUrl}/${postUrl}`;
-                            }
-
-                            // 유효한 포스트 URL인지 확인
-                            if (postUrl.includes(baseUrl) || postUrl.includes('tistory.com')) {
-                                // 제외할 URL 패턴
-                                if (!postUrl.includes('/category/') && 
-                                    !postUrl.includes('/tag/') && 
-                                    !postUrl.includes('/guestbook') &&
-                                    !postUrl.includes('/notice/') &&
-                                    !postUrl.includes('?page=') &&
-                                    !postUrl.includes('#')) {
-                                    
-                                    if (!collectedLinks.find(l => l.url === postUrl)) {
-                                        collectedLinks.push({
-                                            url: postUrl,
-                                            platform: 'tistory',
-                                            submitted: submittedLinks.has(postUrl)
-                                        });
-                                        foundCount++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    debugLog(`페이지 ${page}: ${foundCount}개 발견`, 'info');
-                    
-                    if (foundCount === 0) {
-                        consecutiveEmpty++;
-                    } else {
-                        consecutiveEmpty = 0;
-                    }
-
-                    page++;
-                    await sleep(600);
-
-                } catch (error) {
-                    debugLog(`페이지 ${page} 크롤링 오류: ${error.message}`, 'error');
-                    consecutiveEmpty++;
-                    await sleep(1000);
-                }
-            }
-        }
-
-        // ========== 블로그스팟 ==========
+        // 블로그스팟
         async function collectBlogger(baseUrl) {
-            debugLog(`블로그스팟 수집 시작: ${baseUrl}`, 'info');
-            
-            // 1. Atom 피드 시도 (블로그스팟 기본)
             try {
-                debugLog('Atom 피드 수집 시도...', 'info');
-                updateProgress(0, 'Atom 피드 수집 중...');
+                debugLog('Atom 수집...');
+                updateProgress(0, 'Atom 수집 중...');
                 await collectFromAtom(`${baseUrl}/feeds/posts/default?max-results=500`, 'blogger');
-                debugLog(`Atom 수집 완료: ${collectedLinks.length}개`, 'info');
-            } catch (e) {
-                debugLog(`Atom 실패: ${e.message}`, 'warning');
-            }
+            } catch (e) { debugLog(`Atom 실패`, 'warning'); }
 
-            if (shouldStop) return;
-
-            // 2. RSS 피드 시도
-            if (collectedLinks.length === 0) {
+            if (!shouldStop && collectedLinks.length === 0) {
                 try {
-                    debugLog('RSS 피드 수집 시도...', 'info');
-                    updateProgress(0, 'RSS 피드 수집 중...');
+                    debugLog('RSS 수집...');
                     await collectFromRSS(`${baseUrl}/feeds/posts/default?alt=rss&max-results=500`, 'blogger');
-                    debugLog(`RSS 수집 완료: ${collectedLinks.length}개`, 'info');
-                } catch (e) {
-                    debugLog(`RSS 실패: ${e.message}`, 'warning');
-                }
+                } catch (e) { debugLog(`RSS 실패`, 'warning'); }
             }
 
-            if (shouldStop) return;
-
-            // 3. 사이트맵 시도
-            if (collectedLinks.length < 50) {
+            if (!shouldStop && collectedLinks.length < 50) {
                 try {
-                    debugLog('사이트맵 수집 시도...', 'info');
-                    updateProgress(collectedLinks.length, '사이트맵 수집 중...');
-                    await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'blogger', baseUrl);
-                    debugLog(`사이트맵 수집 후: ${collectedLinks.length}개`, 'info');
-                } catch (e) {
-                    debugLog(`사이트맵 실패: ${e.message}`, 'warning');
-                }
-            }
-
-            if (shouldStop) return;
-
-            // 4. 메인 페이지 크롤링
-            if (collectedLinks.length < 30) {
-                debugLog('메인 페이지 크롤링 시도...', 'info');
-                await crawlBloggerMain(baseUrl);
-            }
-        }
-
-        async function crawlBloggerMain(baseUrl) {
-            try {
-                updateProgress(collectedLinks.length, '블로그 페이지 크롤링 중...');
-                
-                const response = await fetchWithProxy(baseUrl);
-                const html = await response.text();
-                
-                // 블로그스팟 포스트 URL 패턴
-                const patterns = [
-                    /href=["'](https?:\/\/[^"']*blogspot\.com\/\d{4}\/\d{2}\/[^"']+\.html)["']/g,
-                    /href=["'](\/\d{4}\/\d{2}\/[^"']+\.html)["']/g
-                ];
-
-                let foundCount = 0;
-
-                for (const pattern of patterns) {
-                    let match;
-                    while ((match = pattern.exec(html)) !== null) {
-                        let postUrl = match[1];
-                        
-                        if (postUrl.startsWith('/')) {
-                            postUrl = baseUrl + postUrl;
-                        }
-
-                        if (!collectedLinks.find(l => l.url === postUrl)) {
-                            collectedLinks.push({
-                                url: postUrl,
-                                platform: 'blogger',
-                                submitted: submittedLinks.has(postUrl)
-                            });
-                            foundCount++;
-                        }
-                    }
-                }
-
-                debugLog(`메인 페이지에서 ${foundCount}개 발견`, 'info');
-            } catch (error) {
-                debugLog(`메인 페이지 크롤링 실패: ${error.message}`, 'error');
+                    debugLog('사이트맵 수집...');
+                    await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'blogger');
+                } catch (e) { debugLog(`사이트맵 실패`, 'warning'); }
             }
         }
 
@@ -1698,145 +1304,118 @@
         async function collectFromRSS(rssUrl, platform) {
             const response = await fetchWithProxy(rssUrl);
             const text = await response.text();
-            
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             
-            // 파싱 오류 체크
-            const parseError = xml.querySelector('parsererror');
-            if (parseError) {
-                throw new Error('RSS 파싱 오류');
-            }
-
             let count = 0;
-
-            // RSS 2.0 아이템
             xml.querySelectorAll('item').forEach(item => {
-                const linkEl = item.querySelector('link');
-                let url = linkEl?.textContent?.trim();
-                
-                // CDATA 처리
-                if (!url) {
-                    const linkHtml = item.innerHTML;
-                    const linkMatch = linkHtml.match(/<link[^>]*>([^<]+)<\/link>/i);
-                    if (linkMatch) url = linkMatch[1].trim();
-                }
-
+                const url = item.querySelector('link')?.textContent?.trim();
                 if (url && !collectedLinks.find(l => l.url === url)) {
-                    collectedLinks.push({
-                        url,
-                        platform,
-                        submitted: submittedLinks.has(url)
-                    });
+                    collectedLinks.push({ url, platform, submitted: submittedLinks.has(url) });
                     count++;
                 }
             });
-
-            // Atom 엔트리
             xml.querySelectorAll('entry').forEach(entry => {
-                const linkEl = entry.querySelector('link[rel="alternate"]') || entry.querySelector('link');
-                const url = linkEl?.getAttribute('href');
+                const url = (entry.querySelector('link[rel="alternate"]') || entry.querySelector('link'))?.getAttribute('href');
                 if (url && !collectedLinks.find(l => l.url === url)) {
-                    collectedLinks.push({
-                        url,
-                        platform,
-                        submitted: submittedLinks.has(url)
-                    });
+                    collectedLinks.push({ url, platform, submitted: submittedLinks.has(url) });
                     count++;
                 }
             });
-
-            debugLog(`RSS/Atom에서 ${count}개 추출`, 'info');
-            updateProgress(collectedLinks.length, 'RSS 수집 완료');
+            debugLog(`RSS: ${count}개`);
         }
 
         async function collectFromAtom(atomUrl, platform) {
             const response = await fetchWithProxy(atomUrl);
             const text = await response.text();
-            
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             
             let count = 0;
-
             xml.querySelectorAll('entry').forEach(entry => {
-                // alternate 링크 우선
-                let linkEl = entry.querySelector('link[rel="alternate"]');
-                if (!linkEl) {
-                    linkEl = entry.querySelector('link:not([rel="self"]):not([rel="edit"])');
-                }
-                
-                const url = linkEl?.getAttribute('href');
+                const url = (entry.querySelector('link[rel="alternate"]') || entry.querySelector('link'))?.getAttribute('href');
                 if (url && !collectedLinks.find(l => l.url === url)) {
-                    collectedLinks.push({
-                        url,
-                        platform,
-                        submitted: submittedLinks.has(url)
-                    });
+                    collectedLinks.push({ url, platform, submitted: submittedLinks.has(url) });
                     count++;
                 }
             });
-
-            debugLog(`Atom에서 ${count}개 추출`, 'info');
-            updateProgress(collectedLinks.length, 'Atom 수집 완료');
+            debugLog(`Atom: ${count}개`);
         }
 
-        async function collectFromSitemap(sitemapUrl, platform, baseUrl) {
+        async function collectFromSitemap(sitemapUrl, platform) {
             const response = await fetchWithProxy(sitemapUrl);
             const text = await response.text();
-            
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             
-            // 사이트맵 인덱스 확인
-            const sitemapLocs = xml.querySelectorAll('sitemap loc');
-            if (sitemapLocs.length > 0) {
-                debugLog(`사이트맵 인덱스 발견: ${sitemapLocs.length}개 하위 사이트맵`, 'info');
-                for (const loc of sitemapLocs) {
+            const sitemaps = xml.querySelectorAll('sitemap loc');
+            if (sitemaps.length > 0) {
+                for (const loc of sitemaps) {
                     if (shouldStop) break;
-                    try {
-                        await collectFromSitemap(loc.textContent.trim(), platform, baseUrl);
-                        await sleep(400);
-                    } catch (e) {
-                        debugLog(`하위 사이트맵 오류: ${e.message}`, 'warning');
-                    }
+                    try { await collectFromSitemap(loc.textContent.trim(), platform); await sleep(300); }
+                    catch (e) {}
                 }
                 return;
             }
             
-            // URL 추출
             let count = 0;
             xml.querySelectorAll('url loc').forEach(el => {
                 const url = el.textContent?.trim();
-                if (url && !collectedLinks.find(l => l.url === url)) {
-                    // 필터링
-                    if (!url.includes('/category/') && 
-                        !url.includes('/tag/') && 
-                        !url.includes('/page/') &&
-                        !url.includes('/search/') &&
-                        !url.includes('/archive/') &&
-                        !url.includes('/label/') &&
-                        !url.endsWith('/')) {
-                        
-                        collectedLinks.push({
-                            url,
-                            platform,
-                            submitted: submittedLinks.has(url)
-                        });
-                        count++;
-                    }
+                if (url && !collectedLinks.find(l => l.url === url) && 
+                    !url.includes('/category/') && !url.includes('/tag/') && !url.includes('/page/')) {
+                    collectedLinks.push({ url, platform, submitted: submittedLinks.has(url) });
+                    count++;
                 }
             });
+            debugLog(`사이트맵: ${count}개`);
+        }
 
-            debugLog(`사이트맵에서 ${count}개 추출`, 'info');
-            updateProgress(collectedLinks.length, '사이트맵 수집 중...');
+        async function crawlPages(baseUrl, platform) {
+            let page = 1, empty = 0;
+            while (!shouldStop && page <= 100 && empty < 3) {
+                try {
+                    updateProgress(collectedLinks.length, `크롤링 ${page}...`);
+                    const pageUrl = platform === 'tistory' ? `${baseUrl}/?page=${page}` : `${baseUrl}/page/${page}`;
+                    const response = await fetchWithProxy(pageUrl);
+                    const html = await response.text();
+                    
+                    let found = 0;
+                    const patterns = [
+                        new RegExp(`href=["'](${baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(\\d+))["']`, 'g'),
+                        /href=["']\/([\d]+)["']/g,
+                        /href=["']([^"']*\/entry\/[^"']+)["']/g
+                    ];
+                    
+                    for (const pattern of patterns) {
+                        let match;
+                        while ((match = pattern.exec(html)) !== null) {
+                            let postUrl = match[1];
+                            if (postUrl.startsWith('/')) postUrl = baseUrl + postUrl;
+                            if (/^\d+$/.test(postUrl)) postUrl = `${baseUrl}/${postUrl}`;
+                            
+                            if (!postUrl.includes('/category/') && !postUrl.includes('/tag/') && 
+                                !postUrl.includes('?page=') && !collectedLinks.find(l => l.url === postUrl)) {
+                                collectedLinks.push({ url: postUrl, platform, submitted: submittedLinks.has(postUrl) });
+                                found++;
+                            }
+                        }
+                    }
+                    
+                    debugLog(`페이지 ${page}: ${found}개`);
+                    empty = found === 0 ? empty + 1 : 0;
+                    page++;
+                    await sleep(600);
+                } catch (e) {
+                    empty++;
+                    await sleep(1000);
+                }
+            }
         }
 
         // ==================== UI 업데이트 ====================
         function updateProgress(count, status) {
-            const progress = Math.min((count / 100) * 100, 95);
-            document.getElementById('progressBar').style.width = progress + '%';
-            document.getElementById('progressCount').textContent = `${count}개 수집`;
+            document.getElementById('progressBar').style.width = Math.min((count / 100) * 100, 95) + '%';
+            document.getElementById('progressCount').textContent = `${count}개`;
             document.getElementById('progressStatus').textContent = status;
         }
 
@@ -1848,11 +1427,29 @@
             document.getElementById('totalCount').textContent = total;
             document.getElementById('newCount').textContent = newLinks;
             document.getElementById('submittedCount').textContent = submitted;
-            document.getElementById('newLinksInfo').textContent = newLinks;
 
             document.getElementById('filterAllCount').textContent = total;
             document.getElementById('filterNewCount').textContent = newLinks;
             document.getElementById('filterSubmittedCount').textContent = submitted;
+            document.getElementById('availableNewCount').textContent = newLinks;
+        }
+
+        function updateCopyButtons() {
+            const newLinks = collectedLinks.filter(l => !l.submitted);
+            const count = newLinks.length;
+
+            document.getElementById('copyBtn50').disabled = count < 1;
+            document.getElementById('copyBtn100').disabled = count < 1;
+            document.getElementById('copyBtn150').disabled = count < 1;
+            document.getElementById('copyBtn200').disabled = count < 1;
+            document.getElementById('copyBtnAll').disabled = count < 1;
+
+            // 각 버튼에 실제 복사될 개수 표시
+            document.getElementById('copyBtn50').innerHTML = `<span>50개</span><small style="opacity:0.7;margin-left:4px">(${Math.min(50, count)})</small>`;
+            document.getElementById('copyBtn100').innerHTML = `<span>100개</span><small style="opacity:0.7;margin-left:4px">(${Math.min(100, count)})</small>`;
+            document.getElementById('copyBtn150').innerHTML = `<span>150개</span><small style="opacity:0.7;margin-left:4px">(${Math.min(150, count)})</small>`;
+            document.getElementById('copyBtn200').innerHTML = `<span>200개</span><small style="opacity:0.7;margin-left:4px">(${Math.min(200, count)})</small>`;
+            document.getElementById('copyBtnAll').innerHTML = `<span>✨ 전체</span><small style="opacity:0.7;margin-left:4px">(${count})</small>`;
         }
 
         function resetFilterTabs() {
@@ -1865,11 +1462,12 @@
         function setFilter(filter) {
             currentFilter = filter;
             currentPage = 1;
-
             document.querySelectorAll('.filter-tab').forEach(tab => {
                 tab.classList.toggle('active', tab.dataset.filter === filter);
             });
-
+            
+            const filterNames = { all: '전체', new: '새 링크', submitted: '제출됨' };
+            document.getElementById('currentViewInfo').textContent = filterNames[filter];
             renderLinks();
         }
 
@@ -1883,46 +1481,30 @@
 
         function renderLinks() {
             const container = document.getElementById('linksContainer');
-            const filteredLinks = getFilteredLinks();
-            const totalCount = filteredLinks.length;
-            const totalPages = Math.ceil(totalCount / linksPerPage);
+            const filtered = getFilteredLinks();
+            const total = filtered.length;
+            const totalPages = Math.ceil(total / linksPerPage);
+            const platformNames = { naver: '네이버', tistory: '티스토리', blogger: '블로그스팟' };
 
-            const platformNames = {
-                naver: '네이버',
-                tistory: '티스토리',
-                blogger: '블로그스팟'
-            };
-
-            if (totalCount === 0) {
-                container.innerHTML = `
-                    <div class="empty-state">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-                        </svg>
-                        <p>${currentFilter === 'new' ? '새 링크가 없습니다' : currentFilter === 'submitted' ? '제출된 링크가 없습니다' : '수집된 링크가 없습니다'}</p>
-                    </div>
-                `;
+            if (total === 0) {
+                container.innerHTML = `<div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg><p>링크가 없습니다</p></div>`;
                 document.getElementById('pagination').style.display = 'none';
                 return;
             }
 
             const start = (currentPage - 1) * linksPerPage;
-            const end = Math.min(start + linksPerPage, totalCount);
-            const pageLinks = filteredLinks.slice(start, end);
+            const end = Math.min(start + linksPerPage, total);
+            const pageLinks = filtered.slice(start, end);
 
-            container.innerHTML = pageLinks.map((link, index) => `
+            container.innerHTML = pageLinks.map((link, i) => `
                 <div class="link-item ${link.submitted ? 'submitted' : ''}">
-                    <div class="link-number">${start + index + 1}</div>
+                    <div class="link-number">${start + i + 1}</div>
                     <div class="link-content">
-                        <div class="link-url">
-                            <a href="${link.url}" target="_blank">${link.url}</a>
-                        </div>
+                        <div class="link-url"><a href="${link.url}" target="_blank">${link.url}</a></div>
                         <div class="link-platform">${platformNames[link.platform]}</div>
                     </div>
                     <div class="link-status">
-                        <span class="status-badge ${link.submitted ? 'submitted' : 'new'}">
-                            ${link.submitted ? '✓ 제출됨' : '● 새 링크'}
-                        </span>
+                        <span class="status-badge ${link.submitted ? 'submitted' : 'new'}">${link.submitted ? '✓ 제출됨' : '● 새 링크'}</span>
                     </div>
                 </div>
             `).join('');
@@ -1933,28 +1515,42 @@
 
         // ==================== 페이지네이션 ====================
         function prevPage() {
-            if (currentPage > 1) {
-                currentPage--;
-                renderLinks();
-            }
+            if (currentPage > 1) { currentPage--; renderLinks(); }
         }
 
         function nextPage() {
             const totalPages = Math.ceil(getFilteredLinks().length / linksPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderLinks();
-            }
+            if (currentPage < totalPages) { currentPage++; renderLinks(); }
         }
 
         // ==================== 복사 기능 ====================
-        function copyNewLinks() {
+        function copyByCount(count) {
             const newLinks = collectedLinks.filter(l => !l.submitted);
+            if (newLinks.length === 0) { showToast('⚠️ 복사할 새 링크 없음'); return; }
 
-            if (newLinks.length === 0) {
-                showToast('⚠️ 복사할 새 링크가 없습니다');
-                return;
-            }
+            const toCopy = newLinks.slice(0, count);
+            const urls = toCopy.map(l => l.url);
+            copyToClipboard(urls.join('\n'));
+
+            toCopy.forEach(link => {
+                link.submitted = true;
+                submittedLinks.add(link.url);
+            });
+
+            localStorage.setItem('submittedLinks_v5', JSON.stringify([...submittedLinks]));
+            
+            const remaining = collectedLinks.filter(l => !l.submitted).length;
+            document.getElementById('copyRange').textContent = `1 ~ ${toCopy.length}번 복사됨 (남은 새 링크: ${remaining}개)`;
+            
+            renderLinks();
+            updateStats();
+            updateCopyButtons();
+            showToast(`✅ ${toCopy.length}개 복사 완료!`);
+        }
+
+        function copyAllNew() {
+            const newLinks = collectedLinks.filter(l => !l.submitted);
+            if (newLinks.length === 0) { showToast('⚠️ 복사할 새 링크 없음'); return; }
 
             const urls = newLinks.map(l => l.url);
             copyToClipboard(urls.join('\n'));
@@ -1964,98 +1560,99 @@
                 submittedLinks.add(link.url);
             });
 
-            localStorage.setItem('submittedLinks_v4', JSON.stringify([...submittedLinks]));
+            localStorage.setItem('submittedLinks_v5', JSON.stringify([...submittedLinks]));
+            document.getElementById('copyRange').textContent = `전체 ${newLinks.length}개 복사됨`;
+            
             renderLinks();
             updateStats();
-            showToast(`✅ ${urls.length}개의 새 링크 복사 완료`);
+            updateCopyButtons();
+            showToast(`✅ ${newLinks.length}개 전체 복사 완료!`);
         }
 
         function copyCurrentPage() {
-            const filteredLinks = getFilteredLinks();
+            const filtered = getFilteredLinks();
             const start = (currentPage - 1) * linksPerPage;
-            const end = Math.min(start + linksPerPage, filteredLinks.length);
-            const pageLinks = filteredLinks.slice(start, end);
+            const end = Math.min(start + linksPerPage, filtered.length);
+            const pageLinks = filtered.slice(start, end);
 
-            if (pageLinks.length === 0) {
-                showToast('⚠️ 복사할 링크가 없습니다');
-                return;
-            }
+            if (pageLinks.length === 0) { showToast('⚠️ 복사할 링크 없음'); return; }
 
-            const urls = pageLinks.map(l => l.url);
-            copyToClipboard(urls.join('\n'));
+            copyToClipboard(pageLinks.map(l => l.url).join('\n'));
 
             pageLinks.forEach(link => {
                 link.submitted = true;
                 submittedLinks.add(link.url);
             });
 
-            localStorage.setItem('submittedLinks_v4', JSON.stringify([...submittedLinks]));
+            localStorage.setItem('submittedLinks_v5', JSON.stringify([...submittedLinks]));
             renderLinks();
             updateStats();
-            showToast(`✅ ${urls.length}개 링크 복사 완료`);
+            updateCopyButtons();
+            showToast(`✅ ${pageLinks.length}개 복사 완료!`);
         }
 
         function copyAllLinks() {
-            if (collectedLinks.length === 0) {
-                showToast('⚠️ 복사할 링크가 없습니다');
-                return;
-            }
+            if (collectedLinks.length === 0) { showToast('⚠️ 복사할 링크 없음'); return; }
 
-            const urls = collectedLinks.map(l => l.url);
-            copyToClipboard(urls.join('\n'));
+            copyToClipboard(collectedLinks.map(l => l.url).join('\n'));
 
             collectedLinks.forEach(link => {
                 link.submitted = true;
                 submittedLinks.add(link.url);
             });
 
-            localStorage.setItem('submittedLinks_v4', JSON.stringify([...submittedLinks]));
+            localStorage.setItem('submittedLinks_v5', JSON.stringify([...submittedLinks]));
             renderLinks();
             updateStats();
-            showToast(`✅ ${urls.length}개 전체 링크 복사 완료`);
+            updateCopyButtons();
+            showToast(`✅ ${collectedLinks.length}개 전체 복사 완료!`);
         }
 
         async function copyToClipboard(text) {
             try {
                 await navigator.clipboard.writeText(text);
             } catch {
-                const textarea = document.createElement('textarea');
-                textarea.value = text;
-                document.body.appendChild(textarea);
-                textarea.select();
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
                 document.execCommand('copy');
-                document.body.removeChild(textarea);
+                document.body.removeChild(ta);
             }
         }
 
         // ==================== 초기화 ====================
         function resetSubmitted() {
-            collectedLinks.forEach(link => link.submitted = false);
+            collectedLinks.forEach(l => l.submitted = false);
             submittedLinks.clear();
-            localStorage.setItem('submittedLinks_v4', JSON.stringify([]));
+            localStorage.setItem('submittedLinks_v5', JSON.stringify([]));
+            document.getElementById('copyRange').textContent = '-';
             renderLinks();
             updateStats();
-            showToast('🔄 제출 상태가 초기화되었습니다');
+            updateCopyButtons();
+            showToast('🔄 제출 상태 초기화됨');
         }
 
         function clearResults() {
             collectedLinks = [];
             currentPage = 1;
+            document.getElementById('copyRange').textContent = '-';
             renderLinks();
             updateStats();
-            showToast('🗑️ 수집 결과가 삭제되었습니다');
+            updateCopyButtons();
+            showToast('🗑️ 결과 삭제됨');
         }
 
         // ==================== 유틸리티 ====================
-        function showToast(message) {
+        function showToast(msg) {
             const toast = document.getElementById('toast');
-            toast.textContent = message;
+            toast.textContent = msg;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3500);
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         function sleep(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+            return new Promise(r => setTimeout(r, ms));
         }
     </script>
 </body>
