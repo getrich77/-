@@ -60,6 +60,7 @@
             display: flex;
             gap: 12px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .platform-badge {
@@ -193,6 +194,44 @@
             margin-bottom: 10px;
         }
 
+        /* 디버그 로그 */
+        .debug-section {
+            margin-top: 20px;
+            padding: 16px;
+            background: #1e293b;
+            border-radius: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .debug-title {
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .debug-log {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+            color: #10b981;
+            line-height: 1.6;
+        }
+
+        .debug-log .error {
+            color: #ef4444;
+        }
+
+        .debug-log .warning {
+            color: #f59e0b;
+        }
+
+        .debug-log .info {
+            color: #3b82f6;
+        }
+
         /* 저장된 블로그 관리 */
         .blog-manager {
             margin-top: 24px;
@@ -205,6 +244,8 @@
             flex-direction: column;
             gap: 10px;
             margin-top: 16px;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         .blog-item {
@@ -574,6 +615,8 @@
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             z-index: 1000;
             box-shadow: 0 15px 50px rgba(0,0,0,0.3);
+            max-width: 90%;
+            text-align: center;
         }
 
         .toast.show {
@@ -747,18 +790,21 @@
 
         /* 스크롤바 */
         .links-container::-webkit-scrollbar,
-        .blog-list::-webkit-scrollbar {
+        .blog-list::-webkit-scrollbar,
+        .debug-section::-webkit-scrollbar {
             width: 8px;
         }
 
         .links-container::-webkit-scrollbar-track,
-        .blog-list::-webkit-scrollbar-track {
+        .blog-list::-webkit-scrollbar-track,
+        .debug-section::-webkit-scrollbar-track {
             background: #e2e8f0;
             border-radius: 4px;
         }
 
         .links-container::-webkit-scrollbar-thumb,
-        .blog-list::-webkit-scrollbar-thumb {
+        .blog-list::-webkit-scrollbar-thumb,
+        .debug-section::-webkit-scrollbar-thumb {
             background: #94a3b8;
             border-radius: 4px;
         }
@@ -780,13 +826,22 @@
             </div>
 
             <div class="input-group">
-                <input type="text" id="blogUrl" placeholder="블로그 주소 입력 (예: blog.naver.com/id, example.tistory.com, example.blogspot.com)">
+                <input type="text" id="blogUrl" placeholder="블로그 주소 입력 (예: blog.naver.com/blogid 또는 example.tistory.com)">
                 <button class="btn-primary" onclick="addBlog()">➕ 추가</button>
                 <button class="btn-success" id="startBtn" onclick="startCollect()">🚀 수집</button>
                 <button class="btn-danger" id="stopBtn" onclick="stopCollect()" style="display: none;">⏹ 정지</button>
             </div>
 
             <div id="platformDetect"></div>
+
+            <!-- 디버그 로그 -->
+            <div class="debug-section" id="debugSection" style="display: none;">
+                <div class="debug-title">
+                    <span>🔍 수집 로그</span>
+                    <button class="btn-secondary btn-small" onclick="clearDebugLog()" style="padding: 4px 10px; font-size: 0.75rem;">지우기</button>
+                </div>
+                <div class="debug-log" id="debugLog"></div>
+            </div>
 
             <!-- 저장된 블로그 관리 -->
             <div class="blog-manager" id="blogManager" style="display: none;">
@@ -895,8 +950,8 @@
     <script>
         // ==================== 상태 관리 ====================
         let collectedLinks = [];
-        let savedBlogs = JSON.parse(localStorage.getItem('savedBlogs_v3')) || [];
-        let submittedLinks = new Set(JSON.parse(localStorage.getItem('submittedLinks_v3')) || []);
+        let savedBlogs = JSON.parse(localStorage.getItem('savedBlogs_v4')) || [];
+        let submittedLinks = new Set(JSON.parse(localStorage.getItem('submittedLinks_v4')) || []);
         let currentPage = 1;
         let currentFilter = 'all';
         const linksPerPage = 100;
@@ -904,28 +959,46 @@
         let shouldStop = false;
         let editingBlogIndex = -1;
 
+        // ==================== CORS 프록시 목록 ====================
+        const PROXIES = [
+            {
+                name: 'allorigins',
+                url: (target) => `https://api.allorigins.win/raw?url=${encodeURIComponent(target)}`
+            },
+            {
+                name: 'corsproxy.io',
+                url: (target) => `https://corsproxy.io/?${encodeURIComponent(target)}`
+            },
+            {
+                name: 'cors-anywhere-alt',
+                url: (target) => `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(target)}`
+            }
+        ];
+
+        let currentProxyIndex = 0;
+
         // ==================== 플랫폼 설정 ====================
         const PLATFORMS = {
             naver: {
                 name: '네이버 블로그',
                 color: '#03c75a',
                 patterns: [
-                    /blog\.naver\.com\/([^\/\?]+)/,
-                    /m\.blog\.naver\.com\/([^\/\?]+)/
+                    /blog\.naver\.com\/([^\/\?\#]+)/,
+                    /m\.blog\.naver\.com\/([^\/\?\#]+)/
                 ]
             },
             tistory: {
                 name: '티스토리',
                 color: '#eb5311',
                 patterns: [
-                    /([^\/\.]+)\.tistory\.com/
+                    /([a-zA-Z0-9-]+)\.tistory\.com/
                 ]
             },
             blogger: {
                 name: '블로그스팟',
                 color: '#ff5700',
                 patterns: [
-                    /([^\/\.]+)\.blogspot\.com/
+                    /([a-zA-Z0-9-]+)\.blogspot\.com/
                 ]
             }
         };
@@ -940,6 +1013,55 @@
             });
             input.addEventListener('input', detectPlatformFromInput);
         });
+
+        // ==================== 디버그 로그 ====================
+        function debugLog(message, type = 'info') {
+            const debugSection = document.getElementById('debugSection');
+            const debugLogEl = document.getElementById('debugLog');
+            debugSection.style.display = 'block';
+            
+            const time = new Date().toLocaleTimeString();
+            const className = type === 'error' ? 'error' : type === 'warning' ? 'warning' : 'info';
+            debugLogEl.innerHTML += `<div class="${className}">[${time}] ${message}</div>`;
+            debugLogEl.scrollTop = debugLogEl.scrollHeight;
+        }
+
+        function clearDebugLog() {
+            document.getElementById('debugLog').innerHTML = '';
+        }
+
+        // ==================== 프록시 요청 ====================
+        async function fetchWithProxy(url, options = {}) {
+            let lastError;
+            
+            for (let i = 0; i < PROXIES.length; i++) {
+                const proxyIndex = (currentProxyIndex + i) % PROXIES.length;
+                const proxy = PROXIES[proxyIndex];
+                
+                try {
+                    debugLog(`프록시 시도: ${proxy.name}`, 'info');
+                    const proxyUrl = proxy.url(url);
+                    
+                    const response = await fetch(proxyUrl, {
+                        ...options,
+                        signal: AbortSignal.timeout(15000) // 15초 타임아웃
+                    });
+                    
+                    if (response.ok) {
+                        currentProxyIndex = proxyIndex; // 성공한 프록시 기억
+                        debugLog(`${proxy.name} 성공!`, 'info');
+                        return response;
+                    }
+                    
+                    throw new Error(`HTTP ${response.status}`);
+                } catch (error) {
+                    debugLog(`${proxy.name} 실패: ${error.message}`, 'warning');
+                    lastError = error;
+                }
+            }
+            
+            throw lastError || new Error('모든 프록시 실패');
+        }
 
         // ==================== 플랫폼 감지 ====================
         function detectPlatform(url) {
@@ -980,7 +1102,7 @@
             } else {
                 container.innerHTML = `
                     <span class="platform-detect" style="background: #fee2e2; color: #dc2626;">
-                        ⚠️ 지원하지 않는 플랫폼입니다 (네이버, 티스토리, 블로그스팟만 지원)
+                        ⚠️ 지원하지 않는 플랫폼 (네이버, 티스토리, 블로그스팟만 지원)
                     </span>
                 `;
             }
@@ -1018,7 +1140,7 @@
             }
 
             savedBlogs.push(blogData);
-            localStorage.setItem('savedBlogs_v3', JSON.stringify(savedBlogs));
+            localStorage.setItem('savedBlogs_v4', JSON.stringify(savedBlogs));
             document.getElementById('blogUrl').value = '';
             document.getElementById('platformDetect').innerHTML = '';
             renderBlogList();
@@ -1061,7 +1183,7 @@
         function removeBlog(index) {
             if (confirm('이 블로그를 삭제하시겠습니까?')) {
                 savedBlogs.splice(index, 1);
-                localStorage.setItem('savedBlogs_v3', JSON.stringify(savedBlogs));
+                localStorage.setItem('savedBlogs_v4', JSON.stringify(savedBlogs));
                 renderBlogList();
                 showToast('🗑️ 블로그가 삭제되었습니다');
             }
@@ -1100,7 +1222,7 @@
                 customName: newName
             };
 
-            localStorage.setItem('savedBlogs_v3', JSON.stringify(savedBlogs));
+            localStorage.setItem('savedBlogs_v4', JSON.stringify(savedBlogs));
             closeEditModal();
             renderBlogList();
             showToast('✅ 블로그 정보가 수정되었습니다');
@@ -1126,6 +1248,7 @@
             collectedLinks = [];
             currentPage = 1;
             currentFilter = 'all';
+            clearDebugLog();
 
             // UI 업데이트
             document.getElementById('startBtn').style.display = 'none';
@@ -1138,19 +1261,23 @@
             document.getElementById('progressStatus').textContent = '연결 중...';
 
             resetFilterTabs();
+            debugLog(`수집 시작: ${platform.name} (${platform.id})`, 'info');
 
             try {
                 await collectByPlatform(platform, normalizeUrl(input));
                 
                 if (shouldStop) {
                     showToast(`⏹ 수집 중지됨 (${collectedLinks.length}개 수집)`);
+                    debugLog(`수집 중지됨: ${collectedLinks.length}개`, 'warning');
                 } else {
                     const newCount = collectedLinks.filter(l => !l.submitted).length;
                     showToast(`✅ 수집 완료! 총 ${collectedLinks.length}개 (새 링크: ${newCount}개)`);
+                    debugLog(`수집 완료: 총 ${collectedLinks.length}개, 새 링크 ${newCount}개`, 'info');
                 }
             } catch (error) {
                 console.error(error);
-                showToast('❌ 수집 중 오류 발생: ' + error.message);
+                showToast('❌ 수집 중 오류 발생');
+                debugLog(`오류 발생: ${error.message}`, 'error');
             } finally {
                 isCollecting = false;
                 shouldStop = false;
@@ -1165,6 +1292,7 @@
             if (isCollecting) {
                 shouldStop = true;
                 document.getElementById('progressStatus').textContent = '정지 중...';
+                debugLog('수집 정지 요청됨', 'warning');
                 showToast('⏹ 수집을 정지합니다...');
             }
         }
@@ -1176,7 +1304,7 @@
                     await collectNaverBlog(platform.id);
                     break;
                 case 'tistory':
-                    await collectTistory(platform.id);
+                    await collectTistory(platform.id, url);
                     break;
                 case 'blogger':
                     await collectBlogger(url);
@@ -1189,254 +1317,418 @@
 
         // ========== 네이버 블로그 ==========
         async function collectNaverBlog(blogId) {
+            debugLog(`네이버 블로그 수집 시작: ${blogId}`, 'info');
+            
             let page = 1;
             let hasMore = true;
             let consecutiveErrors = 0;
+            const maxPages = 500;
 
-            while (hasMore && !shouldStop && collectedLinks.length < 10000) {
+            while (hasMore && !shouldStop && page <= maxPages) {
                 try {
                     updateProgress(collectedLinks.length, `페이지 ${page} 수집 중...`);
                     
-                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
+                    // 네이버 블로그 API 직접 호출 시도
                     const apiUrl = `https://blog.naver.com/PostTitleListAsync.naver?blogId=${blogId}&currentPage=${page}&countPerPage=30`;
                     
-                    const response = await fetch(proxyUrl + encodeURIComponent(apiUrl));
+                    debugLog(`API 요청: 페이지 ${page}`, 'info');
+                    const response = await fetchWithProxy(apiUrl);
                     const text = await response.text();
                     
                     let foundCount = 0;
 
+                    // JSON 파싱 시도
                     try {
+                        // 네이버 응답은 특수한 형식일 수 있음
                         const data = JSON.parse(text);
-                        if (data.postList && data.postList.length > 0) {
+                        
+                        if (data.postList && Array.isArray(data.postList) && data.postList.length > 0) {
                             data.postList.forEach(post => {
-                                const url = `https://blog.naver.com/${blogId}/${post.logNo}`;
-                                if (!collectedLinks.find(l => l.url === url)) {
+                                const postUrl = `https://blog.naver.com/${blogId}/${post.logNo}`;
+                                if (!collectedLinks.find(l => l.url === postUrl)) {
                                     collectedLinks.push({
-                                        url,
+                                        url: postUrl,
                                         platform: 'naver',
-                                        submitted: submittedLinks.has(url)
+                                        submitted: submittedLinks.has(postUrl)
                                     });
                                     foundCount++;
                                 }
                             });
+                            debugLog(`페이지 ${page}: ${foundCount}개 발견 (JSON)`, 'info');
                             hasMore = data.postList.length >= 30;
                         } else {
+                            debugLog(`페이지 ${page}: 더 이상 게시물 없음`, 'info');
                             hasMore = false;
                         }
-                    } catch {
-                        const matches = text.match(/logNo=(\d+)/g);
-                        if (matches) {
-                            [...new Set(matches)].forEach(match => {
-                                const logNo = match.replace('logNo=', '');
-                                const url = `https://blog.naver.com/${blogId}/${logNo}`;
-                                if (!collectedLinks.find(l => l.url === url)) {
+                    } catch (jsonError) {
+                        // JSON 파싱 실패 시 HTML에서 추출
+                        debugLog(`JSON 파싱 실패, HTML 파싱 시도`, 'warning');
+                        
+                        // logNo 패턴 추출
+                        const logNoPattern = /logNo['":\s]+(\d+)/g;
+                        const matches = [...text.matchAll(logNoPattern)];
+                        
+                        if (matches.length > 0) {
+                            const uniqueLogNos = [...new Set(matches.map(m => m[1]))];
+                            uniqueLogNos.forEach(logNo => {
+                                const postUrl = `https://blog.naver.com/${blogId}/${logNo}`;
+                                if (!collectedLinks.find(l => l.url === postUrl)) {
                                     collectedLinks.push({
-                                        url,
+                                        url: postUrl,
                                         platform: 'naver',
-                                        submitted: submittedLinks.has(url)
+                                        submitted: submittedLinks.has(postUrl)
                                     });
                                     foundCount++;
                                 }
                             });
-                            hasMore = matches.length >= 30;
+                            debugLog(`페이지 ${page}: ${foundCount}개 발견 (HTML)`, 'info');
+                            hasMore = uniqueLogNos.length >= 25;
                         } else {
-                            hasMore = false;
+                            // 다른 패턴 시도
+                            const hrefPattern = /\/([a-zA-Z0-9_-]+)\/(\d{10,})/g;
+                            const hrefMatches = [...text.matchAll(hrefPattern)];
+                            
+                            hrefMatches.forEach(match => {
+                                if (match[1] === blogId) {
+                                    const postUrl = `https://blog.naver.com/${blogId}/${match[2]}`;
+                                    if (!collectedLinks.find(l => l.url === postUrl)) {
+                                        collectedLinks.push({
+                                            url: postUrl,
+                                            platform: 'naver',
+                                            submitted: submittedLinks.has(postUrl)
+                                        });
+                                        foundCount++;
+                                    }
+                                }
+                            });
+                            
+                            if (foundCount > 0) {
+                                debugLog(`페이지 ${page}: ${foundCount}개 발견 (href 패턴)`, 'info');
+                            }
+                            
+                            hasMore = foundCount > 0;
                         }
                     }
 
-                    consecutiveErrors = 0;
+                    if (foundCount === 0 && page > 1) {
+                        consecutiveErrors++;
+                        if (consecutiveErrors >= 2) {
+                            debugLog('연속 2회 수집 실패, 종료', 'warning');
+                            hasMore = false;
+                        }
+                    } else {
+                        consecutiveErrors = 0;
+                    }
+
                     page++;
-                    await sleep(400);
+                    await sleep(500);
 
                 } catch (error) {
-                    console.error('네이버 수집 오류:', error);
+                    debugLog(`페이지 ${page} 오류: ${error.message}`, 'error');
                     consecutiveErrors++;
                     if (consecutiveErrors >= 3) {
+                        debugLog('연속 3회 오류, 수집 종료', 'error');
                         hasMore = false;
                     }
-                    await sleep(1000);
+                    await sleep(1500);
                 }
+            }
+
+            // 결과가 없으면 블로그 메인 페이지에서 직접 수집 시도
+            if (collectedLinks.length === 0) {
+                debugLog('API 수집 실패, 블로그 메인 페이지 크롤링 시도', 'warning');
+                await crawlNaverBlogMain(blogId);
+            }
+        }
+
+        async function crawlNaverBlogMain(blogId) {
+            try {
+                const mainUrl = `https://blog.naver.com/PostList.naver?blogId=${blogId}&from=postList&categoryNo=0`;
+                debugLog(`메인 페이지 크롤링: ${mainUrl}`, 'info');
+                
+                const response = await fetchWithProxy(mainUrl);
+                const html = await response.text();
+                
+                // 다양한 패턴으로 포스트 ID 추출
+                const patterns = [
+                    /logNo=(\d+)/g,
+                    /\/(\d{10,})(?:\?|"|'|$)/g,
+                    /postId['":\s]+['"]?(\d+)/g
+                ];
+
+                const foundIds = new Set();
+                
+                for (const pattern of patterns) {
+                    const matches = [...html.matchAll(pattern)];
+                    matches.forEach(match => {
+                        if (match[1] && match[1].length >= 10) {
+                            foundIds.add(match[1]);
+                        }
+                    });
+                }
+
+                foundIds.forEach(logNo => {
+                    const postUrl = `https://blog.naver.com/${blogId}/${logNo}`;
+                    if (!collectedLinks.find(l => l.url === postUrl)) {
+                        collectedLinks.push({
+                            url: postUrl,
+                            platform: 'naver',
+                            submitted: submittedLinks.has(postUrl)
+                        });
+                    }
+                });
+
+                debugLog(`메인 페이지에서 ${foundIds.size}개 발견`, 'info');
+            } catch (error) {
+                debugLog(`메인 페이지 크롤링 실패: ${error.message}`, 'error');
             }
         }
 
         // ========== 티스토리 ==========
-        async function collectTistory(blogId) {
-            const baseUrl = `https://${blogId}.tistory.com`;
+        async function collectTistory(blogId, baseUrl) {
+            debugLog(`티스토리 수집 시작: ${blogId}`, 'info');
             
-            // 1. RSS 시도
+            // 1. RSS 피드 시도
             try {
+                debugLog('RSS 피드 수집 시도...', 'info');
                 updateProgress(0, 'RSS 피드 수집 중...');
                 await collectFromRSS(`${baseUrl}/rss`, 'tistory');
+                debugLog(`RSS 수집 완료: ${collectedLinks.length}개`, 'info');
             } catch (e) {
-                console.log('RSS 실패');
+                debugLog(`RSS 실패: ${e.message}`, 'warning');
             }
 
             if (shouldStop) return;
 
             // 2. 사이트맵 시도
-            try {
-                updateProgress(collectedLinks.length, '사이트맵 수집 중...');
-                await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'tistory');
-            } catch (e) {
-                console.log('사이트맵 실패');
+            if (collectedLinks.length < 100) {
+                try {
+                    debugLog('사이트맵 수집 시도...', 'info');
+                    updateProgress(collectedLinks.length, '사이트맵 수집 중...');
+                    await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'tistory', baseUrl);
+                    debugLog(`사이트맵 수집 후: ${collectedLinks.length}개`, 'info');
+                } catch (e) {
+                    debugLog(`사이트맵 실패: ${e.message}`, 'warning');
+                }
             }
 
             if (shouldStop) return;
 
             // 3. 페이지 크롤링
             if (collectedLinks.length < 50) {
+                debugLog('페이지 크롤링 시도...', 'info');
                 await crawlTistoryPages(baseUrl);
             }
         }
 
         async function crawlTistoryPages(baseUrl) {
             let page = 1;
-            let hasMore = true;
+            let consecutiveEmpty = 0;
 
-            while (hasMore && !shouldStop && page <= 100) {
+            while (!shouldStop && page <= 100 && consecutiveEmpty < 3) {
                 try {
                     updateProgress(collectedLinks.length, `페이지 ${page} 크롤링 중...`);
                     
-                    const proxyUrl = 'https://api.allorigins.win/raw?url=';
                     const pageUrl = `${baseUrl}/?page=${page}`;
+                    debugLog(`크롤링: ${pageUrl}`, 'info');
                     
-                    const response = await fetch(proxyUrl + encodeURIComponent(pageUrl));
+                    const response = await fetchWithProxy(pageUrl);
                     const html = await response.text();
                     
-                    // 다양한 티스토리 스킨 패턴
+                    let foundCount = 0;
+                    
+                    // 티스토리 포스트 URL 패턴들
                     const patterns = [
-                        /href="(https?:\/\/[^"]*tistory\.com\/\d+)"/g,
-                        /href="(\/\d+)"/g,
-                        /href="(\/entry\/[^"]+)"/g
+                        new RegExp(`href=["'](${baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}/(\\d+))["']`, 'g'),
+                        new RegExp(`href=["']/(\\d+)["']`, 'g'),
+                        new RegExp(`href=["'](https?://[^"']*tistory\\.com/(\\d+))["']`, 'g'),
+                        /href=["']([^"']*\/entry\/[^"']+)["']/g
                     ];
 
-                    let foundCount = 0;
                     for (const pattern of patterns) {
                         let match;
                         while ((match = pattern.exec(html)) !== null) {
-                            let url = match[1];
-                            if (url.startsWith('/')) {
-                                url = baseUrl + url;
+                            let postUrl = match[1];
+                            
+                            // 상대 경로 처리
+                            if (postUrl.startsWith('/')) {
+                                postUrl = baseUrl + postUrl;
                             }
-                            if (url.includes('tistory.com') && !collectedLinks.find(l => l.url === url)) {
-                                // 카테고리, 태그 등 제외
-                                if (!url.includes('/category/') && 
-                                    !url.includes('/tag/') && 
-                                    !url.includes('/guestbook') &&
-                                    !url.includes('?page=')) {
-                                    collectedLinks.push({
-                                        url,
-                                        platform: 'tistory',
-                                        submitted: submittedLinks.has(url)
-                                    });
-                                    foundCount++;
+                            
+                            // 숫자로만 된 경우
+                            if (/^\d+$/.test(postUrl)) {
+                                postUrl = `${baseUrl}/${postUrl}`;
+                            }
+
+                            // 유효한 포스트 URL인지 확인
+                            if (postUrl.includes(baseUrl) || postUrl.includes('tistory.com')) {
+                                // 제외할 URL 패턴
+                                if (!postUrl.includes('/category/') && 
+                                    !postUrl.includes('/tag/') && 
+                                    !postUrl.includes('/guestbook') &&
+                                    !postUrl.includes('/notice/') &&
+                                    !postUrl.includes('?page=') &&
+                                    !postUrl.includes('#')) {
+                                    
+                                    if (!collectedLinks.find(l => l.url === postUrl)) {
+                                        collectedLinks.push({
+                                            url: postUrl,
+                                            platform: 'tistory',
+                                            submitted: submittedLinks.has(postUrl)
+                                        });
+                                        foundCount++;
+                                    }
                                 }
                             }
                         }
                     }
 
-                    hasMore = foundCount > 0;
+                    debugLog(`페이지 ${page}: ${foundCount}개 발견`, 'info');
+                    
+                    if (foundCount === 0) {
+                        consecutiveEmpty++;
+                    } else {
+                        consecutiveEmpty = 0;
+                    }
+
                     page++;
-                    await sleep(500);
+                    await sleep(600);
 
                 } catch (error) {
-                    console.error('티스토리 크롤링 오류:', error);
-                    hasMore = false;
+                    debugLog(`페이지 ${page} 크롤링 오류: ${error.message}`, 'error');
+                    consecutiveEmpty++;
+                    await sleep(1000);
                 }
             }
         }
 
         // ========== 블로그스팟 ==========
         async function collectBlogger(baseUrl) {
-            // 1. RSS 피드 시도
+            debugLog(`블로그스팟 수집 시작: ${baseUrl}`, 'info');
+            
+            // 1. Atom 피드 시도 (블로그스팟 기본)
             try {
-                updateProgress(0, 'RSS 피드 수집 중...');
-                await collectFromRSS(`${baseUrl}/feeds/posts/default?alt=rss&max-results=500`, 'blogger');
+                debugLog('Atom 피드 수집 시도...', 'info');
+                updateProgress(0, 'Atom 피드 수집 중...');
+                await collectFromAtom(`${baseUrl}/feeds/posts/default?max-results=500`, 'blogger');
+                debugLog(`Atom 수집 완료: ${collectedLinks.length}개`, 'info');
             } catch (e) {
-                console.log('RSS 실패');
+                debugLog(`Atom 실패: ${e.message}`, 'warning');
             }
 
             if (shouldStop) return;
 
-            // 2. Atom 피드 시도
+            // 2. RSS 피드 시도
             if (collectedLinks.length === 0) {
                 try {
-                    updateProgress(0, 'Atom 피드 수집 중...');
-                    await collectFromAtom(`${baseUrl}/feeds/posts/default?max-results=500`, 'blogger');
+                    debugLog('RSS 피드 수집 시도...', 'info');
+                    updateProgress(0, 'RSS 피드 수집 중...');
+                    await collectFromRSS(`${baseUrl}/feeds/posts/default?alt=rss&max-results=500`, 'blogger');
+                    debugLog(`RSS 수집 완료: ${collectedLinks.length}개`, 'info');
                 } catch (e) {
-                    console.log('Atom 실패');
+                    debugLog(`RSS 실패: ${e.message}`, 'warning');
                 }
             }
 
             if (shouldStop) return;
 
             // 3. 사이트맵 시도
-            try {
-                updateProgress(collectedLinks.length, '사이트맵 수집 중...');
-                await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'blogger');
-            } catch (e) {
-                console.log('사이트맵 실패');
+            if (collectedLinks.length < 50) {
+                try {
+                    debugLog('사이트맵 수집 시도...', 'info');
+                    updateProgress(collectedLinks.length, '사이트맵 수집 중...');
+                    await collectFromSitemap(`${baseUrl}/sitemap.xml`, 'blogger', baseUrl);
+                    debugLog(`사이트맵 수집 후: ${collectedLinks.length}개`, 'info');
+                } catch (e) {
+                    debugLog(`사이트맵 실패: ${e.message}`, 'warning');
+                }
             }
 
             if (shouldStop) return;
 
-            // 4. 페이지 크롤링
-            if (collectedLinks.length < 50) {
-                await crawlBloggerPages(baseUrl);
+            // 4. 메인 페이지 크롤링
+            if (collectedLinks.length < 30) {
+                debugLog('메인 페이지 크롤링 시도...', 'info');
+                await crawlBloggerMain(baseUrl);
             }
         }
 
-        async function crawlBloggerPages(baseUrl) {
+        async function crawlBloggerMain(baseUrl) {
             try {
                 updateProgress(collectedLinks.length, '블로그 페이지 크롤링 중...');
                 
-                const proxyUrl = 'https://api.allorigins.win/raw?url=';
-                const response = await fetch(proxyUrl + encodeURIComponent(baseUrl));
+                const response = await fetchWithProxy(baseUrl);
                 const html = await response.text();
                 
-                // 블로그스팟 포스트 패턴
+                // 블로그스팟 포스트 URL 패턴
                 const patterns = [
-                    /href="(https?:\/\/[^"]*blogspot\.com\/\d{4}\/\d{2}\/[^"]+\.html)"/g,
-                    /href='(https?:\/\/[^']*blogspot\.com\/\d{4}\/\d{2}\/[^']+\.html)'/g
+                    /href=["'](https?:\/\/[^"']*blogspot\.com\/\d{4}\/\d{2}\/[^"']+\.html)["']/g,
+                    /href=["'](\/\d{4}\/\d{2}\/[^"']+\.html)["']/g
                 ];
+
+                let foundCount = 0;
 
                 for (const pattern of patterns) {
                     let match;
                     while ((match = pattern.exec(html)) !== null) {
-                        const url = match[1];
-                        if (!collectedLinks.find(l => l.url === url)) {
+                        let postUrl = match[1];
+                        
+                        if (postUrl.startsWith('/')) {
+                            postUrl = baseUrl + postUrl;
+                        }
+
+                        if (!collectedLinks.find(l => l.url === postUrl)) {
                             collectedLinks.push({
-                                url,
+                                url: postUrl,
                                 platform: 'blogger',
-                                submitted: submittedLinks.has(url)
+                                submitted: submittedLinks.has(postUrl)
                             });
+                            foundCount++;
                         }
                     }
                 }
+
+                debugLog(`메인 페이지에서 ${foundCount}개 발견`, 'info');
             } catch (error) {
-                console.error('블로그스팟 크롤링 오류:', error);
+                debugLog(`메인 페이지 크롤링 실패: ${error.message}`, 'error');
             }
         }
 
         // ==================== 공통 수집 함수 ====================
         async function collectFromRSS(rssUrl, platform) {
-            const proxyUrl = 'https://api.allorigins.win/raw?url=';
-            const response = await fetch(proxyUrl + encodeURIComponent(rssUrl));
+            const response = await fetchWithProxy(rssUrl);
             const text = await response.text();
             
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             
+            // 파싱 오류 체크
+            const parseError = xml.querySelector('parsererror');
+            if (parseError) {
+                throw new Error('RSS 파싱 오류');
+            }
+
+            let count = 0;
+
             // RSS 2.0 아이템
             xml.querySelectorAll('item').forEach(item => {
                 const linkEl = item.querySelector('link');
-                const url = linkEl?.textContent?.trim();
+                let url = linkEl?.textContent?.trim();
+                
+                // CDATA 처리
+                if (!url) {
+                    const linkHtml = item.innerHTML;
+                    const linkMatch = linkHtml.match(/<link[^>]*>([^<]+)<\/link>/i);
+                    if (linkMatch) url = linkMatch[1].trim();
+                }
+
                 if (url && !collectedLinks.find(l => l.url === url)) {
                     collectedLinks.push({
                         url,
                         platform,
                         submitted: submittedLinks.has(url)
                     });
+                    count++;
                 }
             });
 
@@ -1450,22 +1742,30 @@
                         platform,
                         submitted: submittedLinks.has(url)
                     });
+                    count++;
                 }
             });
 
+            debugLog(`RSS/Atom에서 ${count}개 추출`, 'info');
             updateProgress(collectedLinks.length, 'RSS 수집 완료');
         }
 
         async function collectFromAtom(atomUrl, platform) {
-            const proxyUrl = 'https://api.allorigins.win/raw?url=';
-            const response = await fetch(proxyUrl + encodeURIComponent(atomUrl));
+            const response = await fetchWithProxy(atomUrl);
             const text = await response.text();
             
             const parser = new DOMParser();
             const xml = parser.parseFromString(text, 'text/xml');
             
+            let count = 0;
+
             xml.querySelectorAll('entry').forEach(entry => {
-                const linkEl = entry.querySelector('link[rel="alternate"]') || entry.querySelector('link');
+                // alternate 링크 우선
+                let linkEl = entry.querySelector('link[rel="alternate"]');
+                if (!linkEl) {
+                    linkEl = entry.querySelector('link:not([rel="self"]):not([rel="edit"])');
+                }
+                
                 const url = linkEl?.getAttribute('href');
                 if (url && !collectedLinks.find(l => l.url === url)) {
                     collectedLinks.push({
@@ -1473,15 +1773,16 @@
                         platform,
                         submitted: submittedLinks.has(url)
                     });
+                    count++;
                 }
             });
 
+            debugLog(`Atom에서 ${count}개 추출`, 'info');
             updateProgress(collectedLinks.length, 'Atom 수집 완료');
         }
 
-        async function collectFromSitemap(sitemapUrl, platform) {
-            const proxyUrl = 'https://api.allorigins.win/raw?url=';
-            const response = await fetch(proxyUrl + encodeURIComponent(sitemapUrl));
+        async function collectFromSitemap(sitemapUrl, platform, baseUrl) {
+            const response = await fetchWithProxy(sitemapUrl);
             const text = await response.text();
             
             const parser = new DOMParser();
@@ -1490,19 +1791,21 @@
             // 사이트맵 인덱스 확인
             const sitemapLocs = xml.querySelectorAll('sitemap loc');
             if (sitemapLocs.length > 0) {
+                debugLog(`사이트맵 인덱스 발견: ${sitemapLocs.length}개 하위 사이트맵`, 'info');
                 for (const loc of sitemapLocs) {
                     if (shouldStop) break;
                     try {
-                        await collectFromSitemap(loc.textContent.trim(), platform);
-                        await sleep(300);
+                        await collectFromSitemap(loc.textContent.trim(), platform, baseUrl);
+                        await sleep(400);
                     } catch (e) {
-                        continue;
+                        debugLog(`하위 사이트맵 오류: ${e.message}`, 'warning');
                     }
                 }
                 return;
             }
             
             // URL 추출
+            let count = 0;
             xml.querySelectorAll('url loc').forEach(el => {
                 const url = el.textContent?.trim();
                 if (url && !collectedLinks.find(l => l.url === url)) {
@@ -1511,22 +1814,27 @@
                         !url.includes('/tag/') && 
                         !url.includes('/page/') &&
                         !url.includes('/search/') &&
-                        !url.includes('/archive/')) {
+                        !url.includes('/archive/') &&
+                        !url.includes('/label/') &&
+                        !url.endsWith('/')) {
+                        
                         collectedLinks.push({
                             url,
                             platform,
                             submitted: submittedLinks.has(url)
                         });
+                        count++;
                     }
                 }
             });
 
+            debugLog(`사이트맵에서 ${count}개 추출`, 'info');
             updateProgress(collectedLinks.length, '사이트맵 수집 중...');
         }
 
         // ==================== UI 업데이트 ====================
         function updateProgress(count, status) {
-            const progress = Math.min((count / 50) * 100, 95);
+            const progress = Math.min((count / 100) * 100, 95);
             document.getElementById('progressBar').style.width = progress + '%';
             document.getElementById('progressCount').textContent = `${count}개 수집`;
             document.getElementById('progressStatus').textContent = status;
@@ -1656,7 +1964,7 @@
                 submittedLinks.add(link.url);
             });
 
-            localStorage.setItem('submittedLinks_v3', JSON.stringify([...submittedLinks]));
+            localStorage.setItem('submittedLinks_v4', JSON.stringify([...submittedLinks]));
             renderLinks();
             updateStats();
             showToast(`✅ ${urls.length}개의 새 링크 복사 완료`);
@@ -1681,7 +1989,7 @@
                 submittedLinks.add(link.url);
             });
 
-            localStorage.setItem('submittedLinks_v3', JSON.stringify([...submittedLinks]));
+            localStorage.setItem('submittedLinks_v4', JSON.stringify([...submittedLinks]));
             renderLinks();
             updateStats();
             showToast(`✅ ${urls.length}개 링크 복사 완료`);
@@ -1701,7 +2009,7 @@
                 submittedLinks.add(link.url);
             });
 
-            localStorage.setItem('submittedLinks_v3', JSON.stringify([...submittedLinks]));
+            localStorage.setItem('submittedLinks_v4', JSON.stringify([...submittedLinks]));
             renderLinks();
             updateStats();
             showToast(`✅ ${urls.length}개 전체 링크 복사 완료`);
@@ -1724,7 +2032,7 @@
         function resetSubmitted() {
             collectedLinks.forEach(link => link.submitted = false);
             submittedLinks.clear();
-            localStorage.setItem('submittedLinks_v3', JSON.stringify([]));
+            localStorage.setItem('submittedLinks_v4', JSON.stringify([]));
             renderLinks();
             updateStats();
             showToast('🔄 제출 상태가 초기화되었습니다');
@@ -1743,7 +2051,7 @@
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 3000);
+            setTimeout(() => toast.classList.remove('show'), 3500);
         }
 
         function sleep(ms) {
